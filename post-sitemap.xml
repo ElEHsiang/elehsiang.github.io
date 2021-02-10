@@ -9,6 +9,22 @@
 
 
     <url>
+        <loc>https://elehsiang.github.io/2021/02/10/20210129-102-Binary-Tree-Level-Order-Traversal/</loc>
+        <lastmod>2021-02-10T05:28:09.690Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://elehsiang.github.io/2021/02/10/20210129-100-Same-Tree/</loc>
+        <lastmod>2021-02-10T05:08:35.197Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>https://elehsiang.github.io/2021/02/01/20210128-98-Validate-Binary-Search-Tree/</loc>
         <lastmod>2021-02-03T15:57:43.631Z</lastmod>
         <changefreq>weekly</changefreq>
