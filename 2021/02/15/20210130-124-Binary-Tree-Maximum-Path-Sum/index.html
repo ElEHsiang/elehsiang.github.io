@@ -21,20 +21,19 @@
     var CONFIG = {"hostname":"elehsiang.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="題目檢查一棵樹是否為二元搜尋樹，二元搜尋樹的條件為對任一節點右方的任何節點都會大於自己，位於左方的任何節點都會小於自己。 思路由於是樹狀結構我們可以用遞迴方式檢查每個節點 ，判斷的條件為此節點的值是否在可允許的區間內。每往下一層檢查，如果檢查的是右方節點則區間最小值要更新，如果檢查的是左方節點則要更新允許區間的最大值。ex. 以此例看，root 節點允許區間是 (LLONG_MIN, LLONG">
+  <meta name="description" content="題目給一顆二元樹，找出一條路徑的總和是最大的。 思路對一個二元樹的節點可能做出的路徑有三種。  parent + left parent + right left + right  因此使用遞迴的方式一個個節點找出這三種路徑的最大值。對 1 &amp; 2 需要得知子節點做出的的路徑最大值，因此遞迴函式的回傳值為 max(0, cur_val, cur_val + left, cur_val +">
 <meta property="og:type" content="article">
-<meta property="og:title" content="8. Validate Binary Search Tree">
-<meta property="og:url" content="https://elehsiang.github.io/2021/02/01/20210128-98-Validate-Binary-Search-Tree/index.html">
+<meta property="og:title" content="124. Binary Tree Maximum Path Sum">
+<meta property="og:url" content="https://elehsiang.github.io/2021/02/15/20210130-124-Binary-Tree-Maximum-Path-Sum/index.html">
 <meta property="og:site_name" content="Yun Blog">
-<meta property="og:description" content="題目檢查一棵樹是否為二元搜尋樹，二元搜尋樹的條件為對任一節點右方的任何節點都會大於自己，位於左方的任何節點都會小於自己。 思路由於是樹狀結構我們可以用遞迴方式檢查每個節點 ，判斷的條件為此節點的值是否在可允許的區間內。每往下一層檢查，如果檢查的是右方節點則區間最小值要更新，如果檢查的是左方節點則要更新允許區間的最大值。ex. 以此例看，root 節點允許區間是 (LLONG_MIN, LLONG">
+<meta property="og:description" content="題目給一顆二元樹，找出一條路徑的總和是最大的。 思路對一個二元樹的節點可能做出的路徑有三種。  parent + left parent + right left + right  因此使用遞迴的方式一個個節點找出這三種路徑的最大值。對 1 &amp; 2 需要得知子節點做出的的路徑最大值，因此遞迴函式的回傳值為 max(0, cur_val, cur_val + left, cur_val +">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-01-31T16:52:08.000Z">
-<meta property="article:modified_time" content="2021-02-03T15:57:43.631Z">
+<meta property="article:published_time" content="2021-02-15T13:48:03.000Z">
+<meta property="article:modified_time" content="2021-02-15T14:20:54.238Z">
 <meta property="article:author" content="Yun">
-<meta property="article:tag" content="leetcode">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://elehsiang.github.io/2021/02/01/20210128-98-Validate-Binary-Search-Tree/">
+<link rel="canonical" href="https://elehsiang.github.io/2021/02/15/20210130-124-Binary-Tree-Maximum-Path-Sum/">
 
 
 <script id="page-configurations">
@@ -47,7 +46,7 @@
   };
 </script>
 
-  <title>8. Validate Binary Search Tree | Yun Blog</title>
+  <title>124. Binary Tree Maximum Path Sum | Yun Blog</title>
   
 
 
@@ -152,7 +151,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://elehsiang.github.io/2021/02/01/20210128-98-Validate-Binary-Search-Tree/">
+    <link itemprop="mainEntityOfPage" href="https://elehsiang.github.io/2021/02/15/20210130-124-Binary-Tree-Maximum-Path-Sum/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -165,7 +164,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          8. Validate Binary Search Tree
+          124. Binary Tree Maximum Path Sum
         </h1>
 
         <div class="post-meta">
@@ -174,16 +173,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-02-01 00:52:08" itemprop="dateCreated datePublished" datetime="2021-02-01T00:52:08+08:00">2021-02-01</time>
+              <time title="Created: 2021-02-15 21:48:03 / Modified: 22:20:54" itemprop="dateCreated datePublished" datetime="2021-02-15T21:48:03+08:00">2021-02-15</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-03 23:57:43" itemprop="dateModified" datetime="2021-02-03T23:57:43+08:00">2021-02-03</time>
-              </span>
 
           
 
@@ -196,13 +189,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>檢查一棵樹是否為二元搜尋樹，二元搜尋樹的條件為對任一節點右方的任何節點都會大於自己，位於左方的任何節點都會小於自己。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>由於是樹狀結構我們可以用遞迴方式檢查每個節點 ，判斷的條件為此節點的值是否在可允許的區間內。每往下一層檢查，如果檢查的是右方節點則區間最小值要更新，如果檢查的是左方節點則要更新允許區間的最大值。<br>ex. 以此例看，root 節點允許區間是 (LLONG_MIN, LLONG_MAX)。往右方檢查節點 3 時允許區間變為 (2, LLONG_MAX)。往左方檢查節點 1 時允許區間為 (LLONG_MIN, 2)。</p>
-<pre><code>   2  
-1     3</code></pre>
-<p>要注意的是 INT_MIN/INT_MAX 也是可能出現的值所以要用 LLONG_MIN/LLONG_MAX 當起始條件判斷。</p>
-<p>程式碼：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">helper</span><span class="params">(TreeNode* root, <span class="keyword">long</span> min, <span class="keyword">long</span> max)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">bool</span> isValid = <span class="literal">true</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!root)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (root-&gt;val &lt;= min || root-&gt;val &gt;= max)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (root-&gt;left)</span><br><span class="line">            isValid &amp;= helper(root-&gt;left, min, root-&gt;val);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (root-&gt;right)</span><br><span class="line">            isValid &amp;= helper(root-&gt;right, root-&gt;val, max);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> isValid;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValidBST</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> helper(root, LLONG_MIN, LLONG_MAX);  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+        <h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>給一顆二元樹，找出一條路徑的總和是最大的。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>對一個二元樹的節點可能做出的路徑有三種。</p>
+<ol>
+<li>parent + left</li>
+<li>parent + right</li>
+<li>left + right</li>
+</ol>
+<p>因此使用遞迴的方式一個個節點找出這三種路徑的最大值。對 1 &amp; 2 需要得知子節點做出的的路徑最大值，因此遞迴函式的回傳值為 max(0, cur_val, cur_val + left, cur_val + right)，代表四種情況</p>
+<ul>
+<li>0 =&gt; 不取此點</li>
+<li>cur_val =&gt; 單取此點</li>
+<li>cur_val + left =&gt; 取此點 ＋ left 子樹最大總和</li>
+<li>cur_val + right =&gt; 取此點 ＋ right 子樹最大總和</li>
+</ul>
+<p>剩下 case 3 就單純是 cur_val + left + right 與目前得知的 max sum 做比對。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">int</span> max_sum = INT_MIN;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">helper</span><span class="params">(TreeNode *root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> max_val = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> left = <span class="number">0</span>, right = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> val;</span><br><span class="line">        <span class="keyword">int</span> ret;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!root)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        val = root-&gt;val;</span><br><span class="line">            </span><br><span class="line">        left = helper(root-&gt;left);</span><br><span class="line">        right = helper(root-&gt;right);</span><br><span class="line">        </span><br><span class="line">        max_sum = max(max_sum, val + left + right);</span><br><span class="line">            </span><br><span class="line">        ret = val;</span><br><span class="line">        ret = max(ret, left + val);</span><br><span class="line">        ret = max(ret, right + val);</span><br><span class="line">        </span><br><span class="line">        max_sum = max(max_sum, ret);</span><br><span class="line">        </span><br><span class="line">        ret = max(ret, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maxPathSum</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        helper(root);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> max_sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -210,9 +212,6 @@
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
-          </div>
 
         
 
@@ -220,13 +219,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/01/26/20210126-91-Decode-Ways/" rel="prev" title="91. Decode Ways">
-      <i class="fa fa-chevron-left"></i> 91. Decode Ways
+    <a href="/2021/02/10/20210129-102-Binary-Tree-Level-Order-Traversal/" rel="prev" title="102. Binary Tree Level Order Traversal">
+      <i class="fa fa-chevron-left"></i> 102. Binary Tree Level Order Traversal
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/02/10/20210129-100-Same-Tree/" rel="next" title="100. Same Tree">
-      100. Same Tree <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
