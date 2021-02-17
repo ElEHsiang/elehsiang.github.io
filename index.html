@@ -146,6 +146,138 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://elehsiang.github.io/2021/02/17/20210205-133-Clone-Graph/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/17/20210205-133-Clone-Graph/" class="post-title-link" itemprop="url">133. Clone Graph</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-02-17 20:36:36 / Modified: 21:35:18" itemprop="dateCreated datePublished" datetime="2021-02-17T20:36:36+08:00">2021-02-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>給一個 graph 做 deepcopy。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>複製 graph 需要走過每個 node 並建立一個相同副本，因此要做兩件事</p>
+<ol>
+<li>紀錄已建立的 node</li>
+<li>紀錄已走訪的 node</li>
+</ol>
+<p>此次使用 set 紀錄已走過的 node，並用 vector 紀錄已經出的 node (用 map 也可)。演算法流程如下</p>
+<ol>
+<li>走訪 node</li>
+<li>確認 node 是否已走訪過，以走訪過就 return</li>
+<li>建立此 node 的 neighbors</li>
+<li>將此 node 加入已走訪的 vector</li>
+<li>走訪每一個 neighbor (回到 2.)</li>
+</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">// Definition for a Node.</span></span><br><span class="line"><span class="comment">class Node &#123;</span></span><br><span class="line"><span class="comment">public:</span></span><br><span class="line"><span class="comment">    int val;</span></span><br><span class="line"><span class="comment">    vector&lt;Node*&gt; neighbors;</span></span><br><span class="line"><span class="comment">    Node() &#123;</span></span><br><span class="line"><span class="comment">        val = 0;</span></span><br><span class="line"><span class="comment">        neighbors = vector&lt;Node*&gt;();</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    Node(int _val) &#123;</span></span><br><span class="line"><span class="comment">        val = _val;</span></span><br><span class="line"><span class="comment">        neighbors = vector&lt;Node*&gt;();</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    Node(int _val, vector&lt;Node*&gt; _neighbors) &#123;</span></span><br><span class="line"><span class="comment">        val = _val;</span></span><br><span class="line"><span class="comment">        neighbors = _neighbors;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">set</span>&lt;Node *&gt; visited;</span><br><span class="line">    <span class="built_in">vector</span>&lt;Node *&gt; created;</span><br><span class="line">    </span><br><span class="line">    <span class="function">Node *<span class="title">findNode</span><span class="params">(<span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> it = find_if(created.begin(), created.end(), [val] (<span class="keyword">const</span> Node *n) &#123;<span class="keyword">return</span> n-&gt;val == val;&#125;);</span><br><span class="line">        <span class="keyword">if</span> (it == created.end())</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> *it;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">Node *<span class="title">createNode</span><span class="params">(<span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">        Node *n = <span class="keyword">new</span> Node(val);</span><br><span class="line">        </span><br><span class="line">        created.push_back(n);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> n;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">Node *<span class="title">helper</span><span class="params">(Node *node)</span> </span>&#123;</span><br><span class="line">        Node *n;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (node == <span class="literal">nullptr</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">        </span><br><span class="line">        n = findNode(node-&gt;val);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (visited.find(n) != visited.end())</span><br><span class="line">            <span class="keyword">return</span> n;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (n == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            n = createNode(node-&gt;val);</span><br><span class="line">        &#125; </span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> it : node-&gt;neighbors) &#123;</span><br><span class="line">                Node *v = findNode(it-&gt;val);</span><br><span class="line">                <span class="keyword">if</span> (v == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                    v = createNode(it-&gt;val);</span><br><span class="line">                &#125;</span><br><span class="line">                n-&gt;neighbors.push_back(v);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        visited.insert(n);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> it : node-&gt;neighbors) &#123;</span><br><span class="line">            helper(it);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> n;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">Node* <span class="title">cloneGraph</span><span class="params">(Node* node)</span> </span>&#123;</span><br><span class="line">        Node *start;</span><br><span class="line">        </span><br><span class="line">        start = helper(node);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> start;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://elehsiang.github.io/2021/02/17/20210130-128-Longest-Consecutive-Sequence/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/17/20210130-128-Longest-Consecutive-Sequence/" class="post-title-link" itemprop="url">128. Longest Consecutive Sequence</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-02-17 20:24:03 / Modified: 20:36:22" itemprop="dateCreated datePublished" datetime="2021-02-17T20:24:03+08:00">2021-02-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>給定一個數列找出可組成的連續數列有多長。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>先將數列由小到大排序，並再掃一次找最長連續數列長度。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">longestConsecutive</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> max_len = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> cur_len = <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (nums.empty())</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        sort(nums.begin(), nums.end());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; nums.size(); i++) &#123;</span><br><span class="line">            <span class="comment">// same as previous, ignore</span></span><br><span class="line">            <span class="keyword">if</span> (nums[i] - nums[i - <span class="number">1</span>] == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> (nums[i] - nums[i - <span class="number">1</span>] == <span class="number">1</span>) &#123;</span><br><span class="line">                cur_len++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                cur_len = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            max_len = max(max_len, cur_len);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> max_len;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://elehsiang.github.io/2021/02/15/20210130-124-Binary-Tree-Maximum-Path-Sum/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -747,85 +879,11 @@ Output: 7 -&gt; 8 -&gt; 0 -&gt; 7</code></pre>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://elehsiang.github.io/2020/11/03/20201103_win10_install_wsl2_error/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Yun">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Yun Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/03/20201103_win10_install_wsl2_error/" class="post-title-link" itemprop="url">win10 安裝 WSL2 遇到錯誤 0xc03a001a</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-11-03 23:42:16 / Modified: 20:50:20" itemprop="dateCreated datePublished" datetime="2020-11-03T23:42:16+08:00">2020-11-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="WSL2-安裝步驟"><a href="#WSL2-安裝步驟" class="headerlink" title="WSL2 安裝步驟"></a>WSL2 安裝步驟</h1><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/windows/wsl/install-win10">Windows 10 上適用於 Linux 的 Windows 子系統安裝指南</a></p>
-<h1 id="問題"><a href="#問題" class="headerlink" title="問題"></a>問題</h1><p>安裝步驟都照 windows 官方文件，並選擇了 ubuntu 20.04。當開啟 WSL2 時卻出現此錯誤訊息。</p>
-<p><code>WslRegisterDistribution failed with error: 0xc03a001a</code></p>
-<p>經過查詢進行了以下兩點操作後成功開啟 WSL2</p>
-<ol>
-<li>開啟虛擬化功能</li>
-<li>關閉 wsl2 的資料夾壓縮</li>
-</ol>
-<h2 id="開啟虛擬化功能"><a href="#開啟虛擬化功能" class="headerlink" title="開啟虛擬化功能"></a>開啟虛擬化功能</h2><p>首先要進入 BIOS，我的主機板是 B360M BAZOOKA，重啟電腦後按 del 進入 BIOS 介面。 接著選擇專業模式後在 Overclocking -&gt; CPU Feature 可以找到這兩個選項，並將他們啟用。</p>
-<ul>
-<li>Intel Virtualization Tech</li>
-<li>Intel VT-D Tech</li>
-</ul>
-<h2 id="關閉-wsl2-的資料夾壓縮"><a href="#關閉-wsl2-的資料夾壓縮" class="headerlink" title="關閉 wsl2 的資料夾壓縮"></a>關閉 wsl2 的資料夾壓縮</h2><p>WSL2 會存放在 <strong>C:\Users\{User name}\AppData\Local\Packages</strong> 底下。我安裝的是 ubuntu 20.04 所以搜尋 ubuntu 可找到 <code>CanonicalGroupLimited.Ubuntu20.04onWindows…</code>。 對他點選右鍵 -&gt; 內容 -&gt; 進階， 將罪魁禍首 <code>壓縮內容，節省磁碟空間</code> 取消。 在開啟 WSL2 就能正常運作了。</p>
-<p>Reference:</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/microsoft/WSL/issues/4299">https://github.com/microsoft/WSL/issues/4299</a></li>
-<li><a target="_blank" rel="noopener" href="https://utf9k.net/blog/wsl2-vhd-issue/">https://utf9k.net/blog/wsl2-vhd-issue/</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
 
 
 
@@ -890,7 +948,7 @@ Output: 7 -&gt; 8 -&gt; 0 -&gt; 7</code></pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
