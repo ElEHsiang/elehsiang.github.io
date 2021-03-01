@@ -146,6 +146,221 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://elehsiang.github.io/2021/02/01/20210128-98-Validate-Binary-Search-Tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/01/20210128-98-Validate-Binary-Search-Tree/" class="post-title-link" itemprop="url">8. Validate Binary Search Tree</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-02-01 00:52:08" itemprop="dateCreated datePublished" datetime="2021-02-01T00:52:08+08:00">2021-02-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-03 23:57:43" itemprop="dateModified" datetime="2021-02-03T23:57:43+08:00">2021-02-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>檢查一棵樹是否為二元搜尋樹，二元搜尋樹的條件為對任一節點右方的任何節點都會大於自己，位於左方的任何節點都會小於自己。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>由於是樹狀結構我們可以用遞迴方式檢查每個節點 ，判斷的條件為此節點的值是否在可允許的區間內。每往下一層檢查，如果檢查的是右方節點則區間最小值要更新，如果檢查的是左方節點則要更新允許區間的最大值。<br>ex. 以此例看，root 節點允許區間是 (LLONG_MIN, LLONG_MAX)。往右方檢查節點 3 時允許區間變為 (2, LLONG_MAX)。往左方檢查節點 1 時允許區間為 (LLONG_MIN, 2)。</p>
+<pre><code>   2  
+1     3</code></pre>
+<p>要注意的是 INT_MIN/INT_MAX 也是可能出現的值所以要用 LLONG_MIN/LLONG_MAX 當起始條件判斷。</p>
+<p>程式碼：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * struct TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode *left;</span></span><br><span class="line"><span class="comment"> *     TreeNode *right;</span></span><br><span class="line"><span class="comment"> *     TreeNode() : val(0), left(nullptr), right(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">helper</span><span class="params">(TreeNode* root, <span class="keyword">long</span> min, <span class="keyword">long</span> max)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">bool</span> isValid = <span class="literal">true</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!root)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (root-&gt;val &lt;= min || root-&gt;val &gt;= max)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (root-&gt;left)</span><br><span class="line">            isValid &amp;= helper(root-&gt;left, min, root-&gt;val);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (root-&gt;right)</span><br><span class="line">            isValid &amp;= helper(root-&gt;right, root-&gt;val, max);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> isValid;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">isValidBST</span><span class="params">(TreeNode* root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> helper(root, LLONG_MIN, LLONG_MAX);  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://elehsiang.github.io/2021/01/26/20210126-91-Decode-Ways/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/26/20210126-91-Decode-Ways/" class="post-title-link" itemprop="url">91. Decode Ways</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-26 23:21:31" itemprop="dateCreated datePublished" datetime="2021-01-26T23:21:31+08:00">2021-01-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-01 00:50:24" itemprop="dateModified" datetime="2021-02-01T00:50:24+08:00">2021-02-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>假定英文字母可由以下方式 decode，給定一串數字可以有幾種 decode 方法。</p>
+<pre><code>A =&gt; 1
+B =&gt; 2 
+...
+Z =&gt; 26</code></pre>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>假設只有 ‘A’ ~ ‘I’ (1 ~ 9) 的數字可以 decode，字串 “226” 能解碼的方式只有一種： ‘BBF’。字母有 26 個，所以要考量到兩個情況:</p>
+<ol>
+<li>一位數字 1 ~ 9</li>
+<li>兩位數字 10 ~ 26</li>
+</ol>
+<p>使用一個陣列記錄在第幾個數字前可以得出幾種組合。以 “226” 為例</p>
+<p>dp[0] 代表 “” 一種組合<br>dp[1] 代表 “2” 一種組合 “B”<br>dp[2] 代表 “22” 可有兩種組合 “BB” &amp; “V”，因此數量是 dp[0] + dp[1]<br>接著以此類推即可得到答案。</p>
+<p>ps. 特例 case 是字串開頭為 ‘0’ 時無法 decode</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">numDecodings</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> length = s.size();</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">dp</span> <span class="params">(length + <span class="number">1</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (s.empty() || s[<span class="number">0</span>] == <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s[i<span class="number">-1</span>] != <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                dp[i] = dp[i - <span class="number">1</span>];</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (i &gt; <span class="number">1</span> &amp;&amp; (s[i - <span class="number">2</span>] == <span class="string">&#x27;1&#x27;</span> || (s[i - <span class="number">2</span>] == <span class="string">&#x27;2&#x27;</span> &amp;&amp; s[i<span class="number">-1</span>] &lt;= <span class="string">&#x27;6&#x27;</span>)))</span><br><span class="line">                dp[i] += dp[i - <span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> dp[length];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://elehsiang.github.io/2021/01/26/20210126-445-Add-Two-Numbers-II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yun Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/26/20210126-445-Add-Two-Numbers-II/" class="post-title-link" itemprop="url">445. Add Two Numbers II</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-01-26 00:52:33 / Modified: 22:53:54" itemprop="dateCreated datePublished" datetime="2021-01-26T00:52:33+08:00">2021-01-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="題目"><a href="#題目" class="headerlink" title="題目"></a>題目</h2><p>給定兩個用 linked-list 表示的數字，回傳兩個數字加總 (同樣以 linked-list 的格式) 。</p>
+<pre><code>Input: (7 -&gt; 2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)
+Output: 7 -&gt; 8 -&gt; 0 -&gt; 7</code></pre>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>數字相加要處理的是進位，高位數會需先計算低位數的進位才能得知結果。每個高位都會依賴低一位的結果直到個位數計算完成，這概念可以用遞迴實作。遞迴函式要做的有</p>
+<ol>
+<li>取得下一位數的 carry (呼叫下一層遞迴)</li>
+<li>建立此位數的 ListNode</li>
+<li>串接 linked-list</li>
+</ol>
+<p>又給與的兩個 linked-list 長度可能不相同，要先計算好兩者長度確認何時開始相加。為了方便我將較長的 list 都換成 list1。最後記得如果有 carry 需再建立一個 ListNode 作為 list的起頭。程式碼如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode *next;</span></span><br><span class="line"><span class="comment"> *     ListNode() : val(0), next(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) : val(x), next(nullptr) &#123;&#125;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x, ListNode *next) : val(x), next(next) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">addNumberHelper</span><span class="params">(ListNode *&amp;head, ListNode *l1, ListNode *l2, <span class="keyword">int</span> len1, <span class="keyword">int</span> len2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> val1 = <span class="number">0</span>, val2 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> carry;</span><br><span class="line">        ListNode *tmp = <span class="literal">NULL</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (!l1 || !l2)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (len1 &gt; len2) &#123;</span><br><span class="line">            carry = addNumberHelper(tmp, l1-&gt;next, l2, len1<span class="number">-1</span>, len2);</span><br><span class="line">            val1 = l1-&gt;val;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            carry = addNumberHelper(tmp, l1-&gt;next, l2-&gt;next, len1<span class="number">-1</span>, len2 - <span class="number">1</span>);</span><br><span class="line">            val1 = l1-&gt;val;</span><br><span class="line">            val2 = l2-&gt;val;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        head = <span class="keyword">new</span> ListNode();</span><br><span class="line">        head-&gt;val = (val1 + val2 + carry) % <span class="number">10</span>;</span><br><span class="line">        head-&gt;next = tmp;</span><br><span class="line">        carry = (val1 + val2 + carry) / <span class="number">10</span>;</span><br><span class="line">        <span class="keyword">return</span> carry;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">ListNode* <span class="title">addTwoNumbers</span><span class="params">(ListNode* l1, ListNode* l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len1 = <span class="number">0</span>, len2 = <span class="number">0</span>, tmp_len;</span><br><span class="line">        <span class="keyword">int</span> carry;</span><br><span class="line">        ListNode *tmp, *head = <span class="literal">NULL</span>;</span><br><span class="line">        </span><br><span class="line">        tmp = l1;</span><br><span class="line">        <span class="keyword">while</span> (tmp) &#123;</span><br><span class="line">            len1++;</span><br><span class="line">            tmp = tmp-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        tmp = l2;</span><br><span class="line">        <span class="keyword">while</span> (tmp) &#123;</span><br><span class="line">            len2++;</span><br><span class="line">            tmp = tmp-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// let l1 be the longer list</span></span><br><span class="line">        <span class="keyword">if</span> (len2 &gt; len1) &#123;</span><br><span class="line">            tmp = l1;</span><br><span class="line">            l1 = l2;</span><br><span class="line">            l2 = tmp;</span><br><span class="line">            </span><br><span class="line">            tmp_len = len1;</span><br><span class="line">            len1 = len2;</span><br><span class="line">            len2 = tmp_len;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        carry = addNumberHelper(head, l1, l2, len1, len2);</span><br><span class="line">        <span class="keyword">if</span> (carry) &#123;</span><br><span class="line">            tmp = head;</span><br><span class="line">            head = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line">            head-&gt;next = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://elehsiang.github.io/2021/01/09/20200108_1011-Capacity-To-Ship-Packages-Within-D-Days/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -472,7 +687,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
