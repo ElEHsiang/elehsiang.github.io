@@ -104,7 +104,7 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/ElEHsiang/elehsiang.github.io
+  repo: git@github.com:ElEHsiang/elehsiang.github.io.git
   branch: master
 
 sitemap:
