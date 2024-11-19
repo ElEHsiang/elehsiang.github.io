@@ -1,0 +1,4 @@
+baseURL = 'https://elehsiang.github.io/'
+languageCode = 'en-us'
+title = "Yun's blog"
+theme = 'ananke'
