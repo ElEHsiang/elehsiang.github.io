@@ -528,7 +528,7 @@ enableEmoji = true
 
   # FixIt 0.3.13 | NEW recently updated pages config for archives, section and term list
   [params.recentlyUpdated]
-    archives = true
+    archives = false
     section = true
     list = true
     days = 30
