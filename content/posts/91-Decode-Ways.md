@@ -3,7 +3,7 @@ title: 91 Decode Ways
 subtitle:
 date: 2024-11-23T16:06:16+08:00
 slug: 4e817bb
-draft: true
+draft: false
 author:
   name: 'Yun'
   link:
@@ -15,9 +15,9 @@ license:
 comment: false
 weight: 0
 tags:
-  - draft
+  - leetcode
 categories:
-  - draft
+  - leetcode
 hiddenFromHomePage: false
 hiddenFromSearch: false
 hiddenFromRelated: false
