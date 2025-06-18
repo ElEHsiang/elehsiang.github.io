@@ -747,7 +747,7 @@ enableEmoji = true
 
   # Site verification code config for Google/Bing/Yandex/Pinterest/Baidu/360/Sogou
   [params.verification]
-    google = ""
+    google = "hRSEbA7W2zSVkTrVCG5kTOPYYkQ2dAPXYfxMTIpTvt0"
     bing = ""
     yandex = ""
     pinterest = ""
