@@ -70,7 +70,7 @@ make O=out ARCH=arm64 menuconfig
 出現選單後可用 '/' 尋找 config 位置並開啟下面這幾個 config ，搜尋時輸入 COINFIG 名稱即可。 ex. 想開啟 CONFIG_PCI，搜尋時直接搜 "PCI"。接著設定 cmdline & init ramfs，cmdline 設 "console-ttyAMA0" 對應到 buildroot 編譯時選的 config，init ramfs 則是 buildroot 編出
 的 output/images/rootfs.cpio。
 
-```C
+```c
 CONFIG_DEVTMPFS=y
 CONFIG_DEVTMPFS_MOUNT=y
 
@@ -86,14 +86,17 @@ CONFIG_NET_9P_DEBUG=y (Optional)
 CONFIG_9P_FS=y
 CONFIG_9P_FS_POSIX_ACL=y
 ```
+
 將 config 存好後就下 make 編譯吧！記得指定 cross compile 的 compiler。編完可以看到 out 下產生很多檔案。
-```
+
+```bash
 make O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
 ```
 
 ## Qemu
 
 Ｕbuntu 可以直接靠 apt-get 安裝。
+
 ```bash
 sudo apt-get install qemu
 ```
@@ -114,7 +117,8 @@ qemu-system-aarch64 \
 ```
 
 linux 就被帶起來，login 時輸入 root 即可。
-```
+
+```text
  [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x411fd070]
 [    0.000000] Linux version 5.9.0-mainline-dirty (yun@ubuntu) (aarch64-linux-gnu-gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #16 SMP PREEMPT Fri Dec 11 15:33:21 CST 2020
 [    0.000000] Machine model: linux,dummy-virt
