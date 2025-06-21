@@ -6,7 +6,6 @@ export type Site = {
   ogImage?: string;
   lightAndDarkMode: boolean;
   postPerPage: number;
-  twitterAccount: string;
   tags: string[];
 };
 
