@@ -53,10 +53,19 @@ inquirer
       .replace(/[^a-zA-Z0-9 ]/g, '')
       .replace(/ /g, '-')
       .replace(/-+/g, '-')
-    const frontMatter = generateFrontMatter(answers)
+    if (!fileName) {
+      throw new Error("fileName not exist")
+    }
+
     let d = new Date()
     let year = d.getFullYear()
-    const postPath = `${root}/${year}/${fileName ? fileName : 'untitled'}.md`
+    const dir = `${root}/${year}/${fileName}`
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
+    }
+    const postPath = `${dir}/${fileName}.md`
+
+    const frontMatter = generateFrontMatter(answers)
     fs.writeFile(postPath, frontMatter, { flag: 'wx' }, (err) => {
       if (err) {
         throw err
