@@ -1,0 +1,16 @@
+root = true
+
+# C
+[*.{c,h,cpp}]
+indent_style = space
+indent_size = 2
+
+#cmake
+[{CMakeLists.txt,*.cmake,*.rst}]
+indent_style = space
+indent_size = 2
+
+#js
+[*.{js}]
+indent_style = space
+indent_size = 2
