@@ -3,3 +3,5 @@ Disallow: /nogooglebot/
 
 User-agent: *
 Allow: /
+
+Sitemap: https://elehsiang.github.io/sitemap-index.xml
