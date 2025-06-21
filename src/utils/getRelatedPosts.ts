@@ -11,7 +11,7 @@ export function getRelatedPosts(
     .filter(
       post =>
         post.data.draft != true &&
-        post.slug != slug &&
+        post.slug.split('/')[1] != slug &&
         post.data.tags?.filter(tag => tags.includes(tag)).length > 0
     )
     .map(post => ({

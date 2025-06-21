@@ -50,9 +50,9 @@ inquirer
     // Remove special characters and replace space with -
     const fileName = answers.title
       .toLowerCase()
-      .replace(/[^a-zA-Z0-9 ]/g, '')
+      .replace(/[^a-zA-Z0-9 \-\+\.]/g, '')
       .replace(/ /g, '-')
-      .replace(/-+/g, '-')
+      .replace(/-+\./g, '-')
     if (!fileName) {
       throw new Error("fileName not exist")
     }
