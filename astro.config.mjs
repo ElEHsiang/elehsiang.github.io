@@ -16,7 +16,9 @@ export default defineConfig({
       applyBaseStyles: false
     }),
     react(),
-    sitemap(),
+    sitemap({
+      changefreq: 'daily',
+    }),
     mdx()
   ],
   markdown: {
@@ -36,4 +38,5 @@ export default defineConfig({
     }
   },
   scopedStyleStrategy: "where",
+  trailingSlash: 'always'
 });
