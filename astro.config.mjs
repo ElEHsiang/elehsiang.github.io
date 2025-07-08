@@ -10,7 +10,7 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://elehsiang.github.io/",
+  site: "https://elehsiang-github-io.vercel.app/",
   // replace this with your deployed domain
   integrations: [tailwind({
       applyBaseStyles: false
