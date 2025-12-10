@@ -4,7 +4,7 @@ export const SITE: Site = {
   website: "https://elefanttw.vercel.app/",
   author: "elefanttw",
   desc: "",
-  title: "The elefant",
+  title: "The Elefant",
   ogImage: "",
   lightAndDarkMode: true,
   postPerPage: 25,
