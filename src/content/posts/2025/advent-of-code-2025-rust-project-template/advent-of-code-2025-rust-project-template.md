@@ -54,4 +54,77 @@ itertools = "0.13"
 regex = "1.10"
 ```
 
+`day00.rs` 內容如下
+```rust
+// src/bin/day00.rs
+use anyhow::Result;
+use aoc_2025::{read_input, read_test_input}; // 引用 lib.rs 中的 helper
+
+fn main() -> Result<()> {
+    let date = 03;
+
+    // 1. 讀取輸入
+    let test_input = read_test_input(date);
+
+    // 2. 執行 Part 1
+    let p1_test_result = part1(&test_input)?;
+    println!("Test Part 1: {}", p1_test_result);
+
+    // 3. 執行 Part 2
+    let p2_test_result = part2(&test_input)?;
+    println!("Test Part 2: {}", p2_test_result);
+
+    // 1. 讀取輸入
+    let input = read_input(date);
+
+    // 2. 執行 Part 1
+    let p1_result = part1(&input)?;
+    println!("Part 1: {}", p1_result);
+
+    // 3. 執行 Part 2
+    let p2_result = part2(&input)?;
+    println!("Part 2: {}", p2_result);
+
+    Ok(())
+}
+
+fn part1(input: &str) -> Result<i64> {
+    // 實作邏輯...
+    // 範例：計算行數
+    let mut sum = 0;
+
+    for line in input.lines() {
+    }
+
+    Ok(sum)
+}
+
+fn part2(input: &str) -> Result<i32> {
+    // 實作邏輯...
+    // 範例：計算行數
+    let mut count = 0;
+
+    for line in input.lines() {
+    }
+
+    Ok(count)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const TEST_INPUT: &str = "\
+Line 1
+Line 2
+Line 3";
+
+    #[test]
+    fn test_part1() {
+        assert_eq!(part1(TEST_INPUT).unwrap(), 3);
+    }
+}
+
+```
+
 開始挑戰吧！
