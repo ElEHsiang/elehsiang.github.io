@@ -27,7 +27,10 @@ export default defineConfig({
     }]],
     rehypePlugins: [rehypeSlug],
     shikiConfig: {
-      theme: "one-dark-pro",
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
       wrap: true
     },
     extendDefaultPlugins: true
