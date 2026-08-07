@@ -1,10 +1,10 @@
 import type { Site, SocialObjects } from "./types";
 
 export const SITE: Site = {
-  website: "https://elefanttw.vercel.app/",
-  author: "elefanttw",
+  website: "https://elephax.vercel.app/",
+  author: "elephax",
   desc: "",
-  title: "The Elefant",
+  title: "ElephaX",
   ogImage: "",
   lightAndDarkMode: true,
   postPerPage: 25,

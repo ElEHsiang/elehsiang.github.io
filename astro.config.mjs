@@ -10,7 +10,7 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://elefanttw.vercel.app/",
+  site: "https://elephax.vercel.app/",
   // replace this with your deployed domain
   integrations: [tailwind({
       applyBaseStyles: false
